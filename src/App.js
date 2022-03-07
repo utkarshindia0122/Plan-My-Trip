@@ -38,7 +38,7 @@ const App = () => {
             <Header />
             <Grid container spacing={3} styles={{ width: '100%' }}>
                 <Grid item xs={12} md={4}>
-                    <List />
+                    <List places={places}/>
 
                 </Grid>
                 <Grid item xs={12} md={8}>
