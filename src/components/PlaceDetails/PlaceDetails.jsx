@@ -6,20 +6,26 @@ import Rating from '@material-ui/lab/Rating';
 
 import useStyles from './styles';
 
-const PlaceDetails = ({ place }) => {
+const PlaceDetails = ({ place ,selected,refProp}) => {
     const classes = useStyles();
+    if(selected) refProp?.current?.scrollIntoView({behavior:"smooth",block:"start"})
     return (
-        <Card elevation={6}>
+        <Card elevation={8}>
             <CardMedia
-                style={{ height: 350 }}
+                style={{ height: 250 }}
                 image={place.photo ? place.photo.images.large.url : 'https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg'}
 
                 title={place.name}
             />
+            //
             <CardContent>
                 <Typography gutterBottom variant="h5">
                     {place.name}
                 </Typography>
+                <Box display="flex" justifyContent="space-between">
+                <Rating value={Number(place.Rating)} readOnly/>
+                    <Typography gutterBottom variant='subtitle1'>out of {place.num_reviews} reviews</Typography>
+                </Box>
                 <Box display="flex" justifyContent="space-between">
                     <Typography variant="subtitle1">Prices</Typography>
                     <Typography gutterBottom variant='subtitle1'>{place.price_level}</Typography>
@@ -49,7 +55,7 @@ const PlaceDetails = ({ place }) => {
                 )}
                 <CardActions>
                     <Button size="small" color="primary" onClick={() => window.open(place.web_url, '_blank')}>
-                        Plan-My-Trip
+                        Trip Advisor
                     </Button>
                     <Button size="small" color="primary" onClick={() => window.open(place.website, '_blank')}>
                         Website
