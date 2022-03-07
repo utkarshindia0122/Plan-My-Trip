@@ -9,7 +9,7 @@ const App = () => {
     const [places, setPlaces] = useState([]);
     
     const [coordinates, setCoordinates] = useState({});// stores our location
-    const [bounds, setBounds] = useState(null);
+    const [bounds, setBounds] = useState({});
 //console.log(bounds);
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
@@ -25,8 +25,8 @@ const App = () => {
     useEffect(() => {
         //bounds.sw,bounds.ne
         //console.log(bounds);
-        Object.create(bounds)
-        getPlacesData(bounds)
+        
+        getPlacesData(bounds.sw,bounds.ne)
             .then((data) => {
                 console.log(data);
                 setPlaces(data);
