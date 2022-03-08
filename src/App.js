@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CssBaseline, Grid } from '@material-ui/core';
 
-import { getPlacesData,getWeatherData } from './api/travelAdvisorAPI';
+import { getPlacesData,getWeatherData } from './api';
 import Header from './components/Header/Header';
 import List from './components/List/List';
 import Map from './components/Map/Map';
@@ -37,8 +37,8 @@ const App = () => {
     }, []);// our current location
 
     useEffect(() => {
-        const filteredPlaces = places.filter((place) => place.rating > rating)
-        setFilteredPlaces(filteredPlaces);
+        const filtered = places.filter((place) => Number(place.rating) > rating);
+        setFilteredPlaces(filtered);
 
     }, [rating]);
 
@@ -46,22 +46,35 @@ const App = () => {
         if (bounds.sw&&bounds.ne) {
             setIsLoading(true);
 
-           getWeatherData(coordinates.lat,coordinates.lng)
+           getWeatherData(coords.lat,coords.lng)
            .then((data)=>setWeatherData(data));
 
             getPlacesData(type, bounds.sw, bounds.ne)
                 .then((data) => {
                     // console.log(data);
                     setPlaces(data?.filter((place) => place.name && place.num_reviews > 0));
-                    setFilteredPlaces([])
+                    setFilteredPlaces([]);
+                    setRating('');
                     setIsLoading(false);
-                })
+                });
         }
     }, [type,bounds]);
+
+    const onLoad=(autoC)=>setAutocomlete(autoC);
+
+    const onPlaceChanged=()=>{
+       const lat=autocomplete.getPlace().geometry.location.lat();
+       const lng=autocomplete.getPlace().geometry.location.lng();
+
+       setCoords({lat,lng});
+
+    };
+
+
     return (
         <>
             <CssBaseline />
-            <Header setCoordinates={setCoordinates} />
+            <Header onPlaceChanged={onPlaceChanged} onLoad={onLoad} />
             <Grid container spacing={3} styles={{ width: '100%' }}>
                 <Grid item xs={12} md={4}>
                     <List
@@ -75,11 +88,11 @@ const App = () => {
                     />
 
                 </Grid>
-                <Grid item xs={12} md={8}>
+                <Grid item xs={12} md={8} styles={{display:'flex', justifyContent:'center', alignItems:'center'}}>
                     <Map
-                        setCoordinates={setCoordinates}
+                        setCoords={setCoords}
                         setBounds={setBounds}
-                        coordinates={coordinates}
+                        coords={coords}
                         places={filteredPlaces.length ? filteredPlaces : places}
                         setChildClicked={setChildClicked}
                         weatherData={weatherData}
@@ -88,5 +101,5 @@ const App = () => {
             </Grid>
         </>
     );
-}
+};
 export default App;

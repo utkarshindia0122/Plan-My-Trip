@@ -6,7 +6,7 @@ import Rating from '@material-ui/lab/Rating';
 
 import useStyles from './styles';
 import mapStyles from './mapStyles';
-const Map = ({ setCoordinates, setBounds, coordinates, places, setChildClicked, weatherData }) => {
+const Map = ({ setCoords, setBounds, coords, places, setChildClicked, weatherData }) => {
     const classes = useStyles();
     const isDesktop = useMediaQuery('(min-width:600px)');
 
@@ -15,14 +15,14 @@ const Map = ({ setCoordinates, setBounds, coordinates, places, setChildClicked, 
         <div className={classes.mapContainer}>
             <GoogleMapReact
                 bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
-                defaultCenter={coordinates}
-                center={coordinates}
+                defaultCenter={coords}
+                center={coords}
                 defaultZoom={14}
                 margin={[50, 50, 50, 50]}
                 options={{ disableDefaultUI: true, zoomControl: true, styles: mapStyles }}
                 onChange={(e) => {
 
-                    setCoordinates({ lat: e.center.lat, lng: e.center.lng });
+                    setCoords({ lat: e.center.lat, lng: e.center.lng });
                     setBounds({ ne: e.marginBounds.ne, sw: e.marginBounds.sw });
                 }}
                 onChildClick={(child) => setChildClicked(child)}
@@ -47,7 +47,7 @@ const Map = ({ setCoordinates, setBounds, coordinates, places, setChildClicked, 
                                         src={place.photo ? place.photo.images.large.url : 'https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg'}
                                         alt={place.name}
                                     />
-                                    <Rating size="small" value={Number(place.Rating)} readOnly />
+                                    <Rating name="read-only" size="small" value={Number(place.rating)} readOnly />
                                 </Paper>
                             )
                         }
@@ -61,5 +61,5 @@ const Map = ({ setCoordinates, setBounds, coordinates, places, setChildClicked, 
             </GoogleMapReact>
         </div>
     );
-}
+};
 export default Map;

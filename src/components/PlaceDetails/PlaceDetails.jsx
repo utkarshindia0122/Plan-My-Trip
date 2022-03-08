@@ -8,7 +8,7 @@ import useStyles from './styles';
 
 const PlaceDetails = ({ place ,selected,refProp}) => {
     const classes = useStyles();
-    if(selected) refProp?.current?.scrollIntoView({behavior:"smooth",block:"start"})
+    if(selected) refProp?.current?.scrollIntoView({behavior:"smooth",block:"start"});
     return (
         <Card elevation={8}>
             <CardMedia
@@ -17,13 +17,13 @@ const PlaceDetails = ({ place ,selected,refProp}) => {
 
                 title={place.name}
             />
-            //
+            
             <CardContent>
                 <Typography gutterBottom variant="h5">
                     {place.name}
                 </Typography>
                 <Box display="flex" justifyContent="space-between">
-                <Rating value={Number(place.Rating)} readOnly/>
+                <Rating name="read-only" value={Number(place.rating)} readOnly/>
                     <Typography gutterBottom variant='subtitle1'>out of {place.num_reviews} reviews</Typography>
                 </Box>
                 <Box display="flex" justifyContent="space-between">
@@ -64,5 +64,5 @@ const PlaceDetails = ({ place ,selected,refProp}) => {
             </CardContent>
         </Card>
     );
-}
+};
 export default PlaceDetails;

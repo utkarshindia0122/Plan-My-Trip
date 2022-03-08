@@ -58,5 +58,5 @@ const List = ({ places, childClicked, isLoading,type,setType,rating,setRating })
         </div>
 
     );
-}
+};
 export default List;
